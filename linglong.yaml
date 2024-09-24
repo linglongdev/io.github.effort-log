@@ -1,0 +1,28 @@
+version: "1"
+
+package:
+  id: io.github.effort-log
+  name: effort-log
+  version: 0.9.4.1
+  kind: app
+  description: |
+    A cross-platform tool for collecting metrics about programming efforts of software developers.
+
+command:
+  - /opt/apps/io.github./files/bin/effort-log
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/RWTH-HPC/effort-log.git
+    version: master
+    commit: 64a2dc2c7b0ebedacf0300f475fe364de8276a80
+
+build: |
+  cd /project/linglong/sources/effort-log.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
